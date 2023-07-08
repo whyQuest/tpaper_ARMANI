@@ -1,0 +1,19 @@
+Final sales receipt in the ARMANI store: 
+
+---------------------------
+
+Report for: 12.6.2023
+
+Product sold today:
+Short in quantity 2pcs for the total price 359.98$
+Short in quantity 2pcs for the total price 359.98$
+Jeans in quantity 5pcs for the total price 3999.95$
+Jeans in quantity 1pcs for the total price 799.99$
+Short in quantity 5pcs for the total price 899.95$
+
+Total profit of the store for today: 6419.85$
+
+---------------------------
+
+ARMANI
+clothing store

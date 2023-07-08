@@ -1,0 +1,9 @@
+Information about purchase>
+
+Your name: Igor
+
+Your surname: Ampilogov
+
+Your telephone: +380958227870
+
+Quantity product: 2

@@ -1,0 +1,41 @@
+--------Sales-Invoice------------
+
+Product name: Jeans
+Product colour: Black
+Stock price: 799.99
+Quantity product: 30
+
+--------------------------------------
+
+Product name: Trousers
+Product colour: White
+Stock price: 599.99
+Quantity product: 15
+
+--------------------------------------
+
+Product name: Sweater
+Product colour: White
+Stock price: 259.99
+Quantity product: 20
+
+--------------------------------------
+
+Product name: Jacket
+Product colour: Blue
+Stock price: 1199.99
+Quantity product: 10
+
+--------------------------------------
+
+Product name: T-Shirt
+Product colour: Black
+Stock price: 199.99
+Quantity product: 40
+
+--------------------------------------
+
+Product name: Short
+Product colour: Gray
+Stock price: 179.99
+Quantity product: 25

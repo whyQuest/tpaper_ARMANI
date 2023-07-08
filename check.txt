@@ -1,0 +1,23 @@
+ARMANI
+clothing store
+
+---Cashier's check---
+
+Information about the product: 
+Name: Short
+Colour: Gray
+Value added tax (20%): 35$
+Quantity: 2pcs 
+Total: 394.98$
+
+---------------------------
+
+Buyer information:
+Name: Igor
+Surname: Ampilogov
+Telephone: +380958227870
+
+Mon Jun 12 19:21:11 2023
+
+
+We wish you a good day and success!
