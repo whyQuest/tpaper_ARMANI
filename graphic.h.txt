@@ -1,0 +1,84 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <chrono>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include "program.h"
+
+using namespace std;
+
+using namespace sf;
+
+class TextObject : public Text
+{
+public:
+    TextObject(const string& text, const string& fontPath, unsigned int characterSize, const Color& color, const Vector2f& position);
+
+private:
+    Font m_font;
+};
+
+class Button
+{
+public:
+    Button(Vector2f size, Vector2f position, Color color, float sizeLine, Color ColorLine);
+
+    bool isClicked(RenderWindow& window);
+
+    bool isMouseOver(RenderWindow& window);
+
+    void draw(RenderWindow& window);
+
+    void setFillColor(Color color);
+
+private:
+    RectangleShape rect;
+};
+
+class SpriteObject
+{
+public:
+    SpriteObject(Vector2f position, Texture& texture, Vector2f pos, Color colour);
+
+    Sprite sprite;
+};
+
+class Rectangle
+{
+public:
+    Rectangle(Vector2f pos, Vector2f size, Color color);
+
+    void draw(RenderWindow& window);
+
+    void setOutlineColor(Color outlineColor);
+
+    void setOutlineThickness(float thickness);
+
+private:
+    RectangleShape rect;
+};
+
+void Final(ARMANI& a, InfoProduct*& i, int number, int size);
+
+void Home_Page(ARMANI& a, InfoProduct*& i, int size);
+
+void Catalogue(ARMANI& a, InfoProduct*& i, int size);
+
+string string_count(InfoProduct*& i, int index);
+
+string string_price(InfoProduct*& i, int index);
+
+string string_fullprice(InfoClient& a, InfoProduct*& i, int index);
+
+string string_kolvo(InfoClient& s);
+
+void Buy(ARMANI& a, InfoProduct*& i, int number, int size);
+
+void Catalogue(ARMANI& a, InfoProduct*& i, int size);
+
+void Final(ARMANI& a, InfoProduct*& i, int number, int size);
+
+void Home_Page(ARMANI& a, InfoProduct*& i, int size);

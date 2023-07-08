@@ -1,0 +1,91 @@
+#pragma once
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+class InfoProduct
+{
+private:
+    string name;
+    string colour;
+    double price;
+    int count;
+public:
+
+    InfoProduct() {};
+
+    void storages(istream& in, InfoProduct& infos);
+
+
+    void read(istream& in, InfoProduct& info);
+
+    void in_file(InfoProduct*& i, int size);
+  
+
+    InfoProduct* init(int size);
+
+    void sold(InfoProduct*& i, int number, int kolvo);
+
+    int get_count();
+
+    string get_name();
+
+    string get_colour();
+
+    double get_price();
+
+    void delete_mat(InfoProduct*& i);
+};
+
+class storage
+{
+public:
+    storage() {}
+
+    void result(InfoProduct*& i, InfoProduct& d, int number, int kolvo, int size);
+
+    void Printed(ostream& out, InfoProduct*& i, InfoProduct& d, int number, int kolvo, int size);
+};
+
+class InfoClient
+{
+    string names;
+    string surnames;
+    string numberPh;
+    int kolvo;
+public:
+    InfoClient() {}
+
+    void in_file2();
+
+    void Inform(istream& in);
+
+    void read2(istream& in);
+
+    string get_names();
+
+    string get_surnames();
+
+    string get_numberPh();
+
+    int get_kolvo();
+
+};
+
+class Order : public InfoProduct, public InfoClient
+{
+public:
+    Order() {}
+
+    void out_file(InfoProduct*& i, InfoClient& lol, int number, int kolvo);
+
+    void Print(ostream& out, InfoProduct*& i, InfoClient& lol, int number, int kolvo);
+
+};
+
+class ARMANI : public Order, public storage
+{
+public:
+    ARMANI() {}
+};

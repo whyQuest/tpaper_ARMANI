@@ -1,0 +1,254 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <chrono>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include "program.h"
+#include "graphic.h"
+
+using namespace std;
+
+    void InfoProduct::storages(istream& in, InfoProduct& infos)
+    {
+        string str;
+
+        in >> str;
+
+        in >> str >> str >> infos.name;
+
+        in >> str >> str >> infos.colour;
+
+        in >> str >> str >> infos.price;
+
+        in >> str >> str >> infos.count;
+
+    }
+
+
+    void InfoProduct::read(istream& in, InfoProduct& info)
+    {
+        storages(in, info);
+    }
+
+    void InfoProduct::in_file(InfoProduct*& i, int size)
+    {
+        const char* filein = "invoice.txt";
+        ifstream fin(filein);
+
+        if (!fin)
+        {
+            cout << "Ой, возникла ошибка открытия файла...";
+            return;
+        }
+
+        for (int j = 0; j < size; j++)
+        {
+            read(fin, i[j]);
+        }
+
+    }
+
+    InfoProduct* InfoProduct::init(int size)
+    {
+        return new InfoProduct[size];
+    }
+
+    void InfoProduct::sold(InfoProduct*& i, int number, int kolvo)
+    {
+    i[number].count -= kolvo;
+    }
+
+    int InfoProduct::get_count()
+    {
+        return count;
+    }
+
+    string InfoProduct::get_name()
+    {
+        return name;
+    }
+
+    string InfoProduct::get_colour()
+    {
+        return colour;
+    }
+
+    double InfoProduct::get_price()
+    {
+        return price;
+    }
+
+    void InfoProduct::delete_mat(InfoProduct*& i)
+    {
+        delete[] i;
+        i = nullptr;
+    }
+
+
+    void storage::result(InfoProduct*& i, InfoProduct& d, int number, int kolvo, int size)
+    {
+        const char* fileout = "result_for_day.txt";
+        ofstream fout(fileout);
+
+        if (!fout)
+        {
+            cout << "Ой, возникла ошибка открытия файла...";
+            return;
+        }
+
+        Printed(fout, i, d, number, kolvo, size);
+
+        fout.close();
+    }
+
+    void storage::Printed(ostream& out, InfoProduct*& i, InfoProduct& d, int number, int kolvo, int size)
+    {
+        out << "Final sales receipt in the ARMANI store: " << endl << endl;
+
+        out << "---------------------------" << endl << endl;
+
+        time_t currentTime = time(nullptr);
+        tm localTime;
+        localtime_s(&localTime, &currentTime);
+        int year = localTime.tm_year + 1900;
+        int month = localTime.tm_mon + 1;
+        int day = localTime.tm_mday;
+
+
+        out << "Report for: " << day << "." << month << "." << year << endl << endl;
+
+        out << "Product sold today:" << endl;
+        out << i[number].get_name() << " in quantity " << kolvo << "pcs" << " for the total price " << i[number].get_price() * kolvo << "$" << endl;
+        srand(time(0));
+        int al = rand() % 3 + 2;
+        double fullmoney = i[number].get_price() * kolvo;
+        for (int index = 0; index < al; index++)
+        {
+            number = rand() % 6;
+            kolvo = rand() % 5 + 1;
+            d.sold(i, number, kolvo);
+
+                out << i[number].get_name() << " in quantity " << kolvo << "pcs" << " for the total price " << i[number].get_price() * kolvo << "$" << endl;
+                fullmoney += i[number].get_price() * kolvo;
+
+        } 
+
+        out << endl;
+        out << "Total profit of the store for today: " << fullmoney << "$" << endl << endl;
+
+        out << "---------------------------" << endl << endl;
+
+        out << "ARMANI" << endl;
+        out << "clothing store" << endl;
+
+    }
+
+
+    void InfoClient::in_file2()
+    {
+        const char* filein = "infoForPurchase.txt";
+        ifstream fin(filein);
+
+        if (!fin)
+        {
+            cout << "Ой, возникла ошибка открытия файла...";
+            return;
+        }
+
+
+        read2(fin);
+
+    }
+
+    void InfoClient::Inform(istream& in)
+    {
+        string str;
+
+        in >> str >> str >> str;
+
+        in >> str >> str >> names;
+
+        in >> str >> str >> surnames;
+
+        in >> str >> str >> numberPh;
+
+        in >> str >> str >> kolvo;
+
+    }
+
+    void InfoClient::read2(istream& in)
+    {
+        Inform(in);
+    }
+
+    string InfoClient::get_names()
+    {
+        return names;
+    }
+
+    string InfoClient::get_surnames()
+    {
+        return surnames;
+    }
+
+    string InfoClient::get_numberPh()
+    {
+        return numberPh;
+    }
+
+    int InfoClient::get_kolvo()
+    {
+        return kolvo;
+    }
+
+
+    void Order::out_file(InfoProduct*& i, InfoClient& lol, int number, int kolvo)
+    {
+        const char* fileout = "check.txt";
+        ofstream fout(fileout);
+
+        if (!fout)
+        {
+            cout << "Ой, возникла ошибка открытия файла...";
+            return;
+        }
+
+        Print(fout, i, lol, number, kolvo);
+
+        fout.close();
+    }
+
+    void Order::Print(ostream& out, InfoProduct*& i, InfoClient& lol, int number, int kolvo)
+    {
+        out << "ARMANI" << endl;
+        out << "clothing store" << endl << endl;
+
+        out << "---Cashier's check---" << endl << endl;
+
+        out << "Information about the product: " << endl;
+        out << "Name: " << i[number].get_name() << endl;
+        out << "Colour: " << i[number].get_colour() << endl;
+        int VAT = i[number].get_price() * 0.2;
+        out << "Value added tax (20%): " << VAT << "$" << endl;
+        out << "Quantity: " << kolvo << "pcs " << endl;
+        out << "Total: " << i[number].get_price() * kolvo + VAT << "$" << endl << endl;
+
+        out << "---------------------------" << endl << endl;
+
+        out << "Buyer information:" << endl;
+        out << "Name: " << lol.get_names() << endl;
+        out << "Surname: " << lol.get_surnames() << endl;
+        out << "Telephone: " << lol.get_numberPh() << endl;
+
+        auto now = chrono::system_clock::now();
+        time_t t = chrono::system_clock::to_time_t(now);
+        char str[26];
+        ctime_s(str, sizeof str, &t);
+        out << endl;
+        out << str << endl;
+
+        out << endl;
+        out << "We wish you a good day and success!" << endl;
+    }

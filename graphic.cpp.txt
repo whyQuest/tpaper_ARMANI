@@ -1,0 +1,707 @@
+#include "graphic.h"
+#include "program.h"
+
+    TextObject::TextObject(const string& text, const string& fontPath, unsigned int characterSize, const Color& color, const Vector2f& position)
+    {
+        if (!m_font.loadFromFile(fontPath))
+        {
+        }
+
+        setString(text);
+        setFont(m_font);
+        setCharacterSize(characterSize);
+        setFillColor(color);
+        setPosition(position);
+    }
+
+
+    Button::Button(Vector2f size, Vector2f position, Color color, float sizeLine, Color ColorLine)
+    {
+        rect.setSize(size);
+        rect.setPosition(position);
+        rect.setFillColor(color);
+        rect.setOutlineThickness(sizeLine);
+        rect.setOutlineColor(ColorLine);
+    }
+
+    bool Button::isClicked(RenderWindow& window)
+    {
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            Vector2i mousePosition = Mouse::getPosition(window);
+            FloatRect buttonBounds = rect.getGlobalBounds();
+            if (buttonBounds.contains(mousePosition.x, mousePosition.y))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Button::isMouseOver(RenderWindow& window)
+    {
+        Vector2i mousePosition = Mouse::getPosition(window);
+        FloatRect buttonBounds = rect.getGlobalBounds();
+        if (buttonBounds.contains(mousePosition.x, mousePosition.y))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void Button::draw(RenderWindow& window)
+    {
+        window.draw(rect);
+    }
+
+    void Button::setFillColor(Color color)
+    {
+        rect.setFillColor(color);
+    }
+
+
+    SpriteObject::SpriteObject(Vector2f position, Texture& texture, Vector2f pos, Color colour)
+    {
+        sprite.setTexture(texture);
+        sprite.setPosition(position);
+        sprite.setScale(pos);
+        sprite.setColor(colour);
+    }
+
+    Rectangle::Rectangle(Vector2f pos, Vector2f size, Color color)
+    {
+        rect.setPosition(pos);
+        rect.setSize(size);
+        rect.setFillColor(color);
+    }
+
+    void Rectangle::draw(RenderWindow& window)
+    {
+        window.draw(rect);
+    }
+
+    void Rectangle::setOutlineColor(Color outlineColor)
+    {
+        rect.setOutlineColor(outlineColor);
+    }
+
+    void Rectangle::setOutlineThickness(float thickness)
+    {
+        rect.setOutlineThickness(thickness);
+    }
+
+void Final(ARMANI& a, InfoProduct*& i, int number, int size);
+
+void Home_Page(ARMANI& a, InfoProduct*& i, int size);
+
+void Catalogue(ARMANI& a, InfoProduct*& i, int size);
+
+string string_count(InfoProduct*& i, int index)
+{
+    if (i[index].get_count() <= 0)
+    {
+        return "Error";
+    }
+    string srt = "Quantity in stock: ";
+    string str = to_string(i[index].get_count());
+    return srt + str;
+}
+
+string string_price(InfoProduct*& i, int index)
+{
+    ostringstream stream;
+    stream << i[index].get_price();
+    string str = stream.str();
+    string srt = "Price: ";
+    return srt + str;
+}
+
+string string_fullprice(InfoClient& a, InfoProduct*& i, int index)
+{
+
+    ostringstream stream;
+    stream << i[index].get_price() * a.get_kolvo();
+    string str = stream.str();
+    string srt = "Full price: ";
+    if (!a.get_kolvo())
+    {
+        return srt + "Error";
+    }
+    return srt + str;
+}
+
+string string_kolvo(InfoClient& s)
+{
+
+    string srt = "Quantity: ";
+    string str = to_string(s.get_kolvo());
+    if (!s.get_kolvo())
+    {
+        return srt + "Error";
+    }
+    return srt + str;
+}
+
+void Buy(ARMANI& a, InfoProduct*& i, int number, int size)
+{
+
+    RenderWindow window4(VideoMode(1920, 1080), "Buy");
+
+    while (window4.isOpen())
+    {
+        TextObject text1("ARMANI", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 42, Color::Black, { 10, 10 });
+        TextObject text2("clothing store", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-ExtraLight.ttf", 22, Color::Black, { 10, 50 });
+        TextObject text3("CATALOGUE", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 24, Color::Black, { 1687, 25 });
+        TextObject text5("NEW COLLECTION", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 48, Color::Black, { 550, 110 });
+        TextObject text6("special for you", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 36, Color::Black, { 900, 160 });
+        TextObject text7("Information about your purchase: ", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 48, Color(0, 0, 0, 180), { 550, 400 });
+
+        TextObject text8(i[number].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 36, Color(0, 0, 0, 180), { 550, 480 });
+        TextObject text8_1(i[number].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 36, Color(0, 0, 0, 180), { 550, 530 });
+        TextObject text8_2(string_fullprice(a, i, number), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 36, Color(0, 0, 0, 180), { 550, 580 });
+        TextObject text8_3(string_kolvo(a), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 36, Color(0, 0, 0, 180), { 550, 630 });
+
+        TextObject text9("BUY", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 36, Color::Black, { 923, 735 });
+
+        Rectangle rect(Vector2f(0, 100), Vector2f(2000, 130), Color(128, 128, 128, 128));
+        Rectangle rect1(Vector2f(1205, 102), Vector2f(300, 127), Color::White);
+        rect1.setOutlineThickness(2);
+        rect1.setOutlineColor(Color::Black);
+        Rectangle rect2(Vector2f(1198, 99), Vector2f(5, 368), Color::White);
+        Rectangle rect3(Vector2f(1507, 99), Vector2f(5, 368), Color::White);
+        Rectangle rect4(Vector2f(0, 950), Vector2f(300, 150), Color(128, 128, 128, 128));
+        Rectangle rect5(Vector2f(310, 950), Vector2f(700, 150), Color(128, 128, 128, 128));
+        Rectangle rect6(Vector2f(1020, 950), Vector2f(150, 150), Color(128, 128, 128, 128));
+        Rectangle rect7(Vector2f(1180, 950), Vector2f(810, 150), Color(128, 128, 128, 128));
+
+        Button myButton1(Vector2f(230, 40), Vector2f(1650, 20), Color::White, 1.75, Color::Black);
+        Button myButton3(Vector2f(340, 70), Vector2f(800, 720), Color::White, 1.75, Color::Black);
+
+        Event event4;
+        while (window4.pollEvent(event4))
+        {
+            if (event4.type == Event::KeyPressed)
+            {
+                if (event4.key.code == Keyboard::Escape)
+                {
+                    window4.close();
+
+                }
+            }
+        }
+
+        if (myButton1.isMouseOver(window4))
+        {
+            myButton1.setFillColor(Color::Black);
+            text3.setFillColor(Color::White);
+        }
+
+        if (myButton3.isMouseOver(window4))
+        {
+            myButton3.setFillColor(Color::Black);
+            text9.setFillColor(Color::White);
+        }
+
+        if (myButton3.isClicked(window4))
+        {
+            window4.close();
+            a.sold(i, number, a.get_kolvo());
+            a.out_file(i, a, number, a.get_kolvo());
+            Final(a, i, number, size);
+        }
+
+        if (myButton1.isClicked(window4))
+        {
+            window4.close();
+            Catalogue(a, i, size);
+        }
+
+        window4.clear(Color::White);
+
+        window4.draw(text1);
+        window4.draw(text2);
+        window4.draw(text5);
+        window4.draw(text6);
+
+        myButton1.draw(window4);
+
+        rect.draw(window4);
+        rect1.draw(window4);
+        rect2.draw(window4);
+        rect3.draw(window4);
+
+        window4.draw(text3);
+        window4.draw(text7);
+
+        window4.draw(text8);
+        window4.draw(text8_1);
+        window4.draw(text8_2);
+        window4.draw(text8_3);
+        myButton3.draw(window4);
+
+        window4.draw(text9);
+        rect4.draw(window4);
+        rect5.draw(window4);
+        rect6.draw(window4);
+        rect7.draw(window4);
+
+        window4.display();
+
+    }
+}
+
+void Catalogue(ARMANI& a, InfoProduct*& i, int size)
+{
+    RenderWindow window2(VideoMode(1920, 1080), "Catalogue");
+
+    while (window2.isOpen())
+    {
+
+        TextObject text1("ARMANI", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 42, Color::Black, { 10, 10 });
+        TextObject text12("clothing store", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-ExtraLight.ttf", 22, Color::Black, { 10, 50 });
+        TextObject text4("HOME PAGE", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 24, Color::Black, { 1690, 25 });
+        TextObject text9("NEW COLLECTION", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 48, Color::Black, { 550, 110 });
+        TextObject text2("special for you", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 36, Color::Black, { 900, 160 });
+
+        TextObject text3(i[0].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 10, 700 });
+        TextObject text3_1(i[0].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 10, 730 });
+        TextObject text3_2(string_count(i, 0), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 10, 760 });
+        TextObject text3_3(string_price(i, 0), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 10, 790 });
+        TextObject text3_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 100, 848 });
+
+        TextObject text5(i[1].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 330, 700 });
+        TextObject text5_1(i[1].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 330, 730 });
+        TextObject text5_2(string_count(i, 1), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 330, 760 });
+        TextObject text5_3(string_price(i, 1), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 330, 790 });
+        TextObject text5_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 420, 848 });
+
+        TextObject text6(i[2].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 650, 700 });
+        TextObject text6_1(i[2].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 650, 730 });
+        TextObject text6_2(string_count(i, 2), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 650, 760 });
+        TextObject text6_3(string_price(i, 2), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 650, 790 });
+        TextObject text6_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 740, 848 });
+
+        TextObject text7(i[3].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 970, 700 });
+        TextObject text7_1(i[3].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 970, 730 });
+        TextObject text7_2(string_count(i, 3), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 970, 760 });
+        TextObject text7_3(string_price(i, 3), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 970, 790 });
+        TextObject text7_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 1060, 848 });
+
+        TextObject text10(i[4].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1290, 700 });
+        TextObject text10_1(i[4].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1290, 730 });
+        TextObject text10_2(string_count(i, 4), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1290, 760 });
+        TextObject text10_3(string_price(i, 4), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1290, 790 });
+        TextObject text10_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 1380, 848 });
+
+        TextObject text11(i[5].get_name(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1610, 700 });
+        TextObject text11_1(i[5].get_colour(), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1610, 730 });
+        TextObject text11_2(string_count(i, 5), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1610, 760 });
+        TextObject text11_3(string_price(i, 5), "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 22, Color::Black, { 1610, 790 });
+        TextObject text11_4("I WANT", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 1700, 848 });
+
+        TextObject text13("Copyright © 2023 Giorgio Armani S.p.A. - All Rights Reserved", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 20, Color(0, 0, 0, 180), { 10, 915 });
+
+        Rectangle rect(Vector2f(0, 100), Vector2f(2000, 130), Color(128, 128, 128, 128));
+        Rectangle rect1(Vector2f(1205, 102), Vector2f(300, 127), Color::White);
+        rect1.setOutlineThickness(2);
+        rect1.setOutlineColor(Color::Black);
+        Rectangle rect2(Vector2f(1198, 99), Vector2f(5, 368), Color::White);
+        Rectangle rect3(Vector2f(1507, 99), Vector2f(5, 368), Color::White);
+
+        Rectangle rect4(Vector2f(7, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect4.setOutlineThickness(1.75);
+        rect4.setOutlineColor(Color::Black);
+
+        Rectangle rect5(Vector2f(327, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect5.setOutlineThickness(1.75);
+        rect5.setOutlineColor(Color::Black);
+
+        Rectangle rect6(Vector2f(647, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect6.setOutlineThickness(1.75);
+        rect6.setOutlineColor(Color::Black);
+
+        Rectangle rect7(Vector2f(967, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect7.setOutlineThickness(1.75);
+        rect7.setOutlineColor(Color::Black);
+
+        Rectangle rect8(Vector2f(1287, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect8.setOutlineThickness(1.75);
+        rect8.setOutlineColor(Color::Black);
+
+        Rectangle rect9(Vector2f(1607, 250), Vector2f(305, 650), Color(0, 0, 0, 0));
+        rect9.setOutlineThickness(1.75);
+        rect9.setOutlineColor(Color::Black);
+
+
+        Texture texture1, texture2, texture3, texture4, texture5, texture6;
+
+        texture1.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\jeans.jpg");
+        texture2.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\trousers.jpg");
+        texture3.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\sweater.jpg");
+        texture4.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\jacket.jpg");
+        texture5.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\tshirt.jpg");
+        texture6.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\short.jpg");
+
+        Button myButton1(Vector2f(230, 40), Vector2f(1650, 20), Color::White, 1.75, Color::Black);
+        Button myButton3(Vector2f(305, 70), Vector2f(7, 830), Color::White, 1.75, Color::Black);
+        Button myButton4(Vector2f(305, 70), Vector2f(327, 830), Color::White, 1.75, Color::Black);
+        Button myButton5(Vector2f(305, 70), Vector2f(647, 830), Color::White, 1.75, Color::Black);
+        Button myButton6(Vector2f(305, 70), Vector2f(967, 830), Color::White, 1.75, Color::Black);
+        Button myButton7(Vector2f(305, 70), Vector2f(1287, 830), Color::White, 1.75, Color::Black);
+        Button myButton8(Vector2f(305, 70), Vector2f(1607, 830), Color::White, 1.75, Color::Black);
+
+        SpriteObject spriteObject1({ 7, 250 }, texture1, { 0.77, 0.77 }, Color(255, 255, 255));
+        SpriteObject spriteObject2({ 327, 250 }, texture2, { 0.77, 0.77 }, Color(255, 255, 255));
+        SpriteObject spriteObject3({ 647, 250 }, texture3, { 0.77, 0.77 }, Color(255, 255, 255));
+        SpriteObject spriteObject4({ 967, 250 }, texture4, { 0.77, 0.77 }, Color(255, 255, 255));
+        SpriteObject spriteObject5({ 1287, 250 }, texture5, { 0.77, 0.77 }, Color(255, 255, 255));
+        SpriteObject spriteObject6({ 1607, 250 }, texture6, { 0.77, 0.77 }, Color(255, 255, 255));
+
+        Event event2;
+        while (window2.pollEvent(event2))
+        {
+            if (event2.type == Event::KeyPressed)
+            {
+                if (event2.key.code == Keyboard::Escape)
+                {
+                    window2.close();
+                }
+            }
+        }
+
+        if (myButton1.isMouseOver(window2))
+        {
+            myButton1.setFillColor(Color::Black);
+            text4.setFillColor(Color::White);
+        }
+
+
+        if (myButton3.isMouseOver(window2))
+        {
+            myButton3.setFillColor(Color::Black);
+            text3_4.setFillColor(Color::White);
+        }
+
+        if (myButton4.isMouseOver(window2))
+        {
+            myButton4.setFillColor(Color::Black);
+            text5_4.setFillColor(Color::White);
+        }
+
+        if (myButton5.isMouseOver(window2))
+        {
+            myButton5.setFillColor(Color::Black);
+            text6_4.setFillColor(Color::White);
+        }
+
+        if (myButton6.isMouseOver(window2))
+        {
+            myButton6.setFillColor(Color::Black);
+            text7_4.setFillColor(Color::White);
+        }
+
+        if (myButton7.isMouseOver(window2))
+        {
+            myButton7.setFillColor(Color::Black);
+            text10_4.setFillColor(Color::White);
+        }
+
+        if (myButton8.isMouseOver(window2))
+        {
+            myButton8.setFillColor(Color::Black);
+            text11_4.setFillColor(Color::White);
+        }
+
+        if (myButton1.isClicked(window2))
+        {
+            window2.close();
+            Home_Page(a, i, size);
+        }
+
+        if (myButton3.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 0;
+            Buy(a, i, number, size);
+        }
+
+        if (myButton4.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 1;
+            Buy(a, i, number, size);
+        }
+
+        if (myButton5.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 2;
+            Buy(a, i, number, size);
+        }
+
+        if (myButton6.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 3;
+            Buy(a, i, number, size);
+        }
+
+        if (myButton7.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 4;
+            Buy(a, i, number, size);
+        }
+
+        if (myButton8.isClicked(window2))
+        {
+            window2.close();
+            system("notepad.exe infoForPurchase.txt");
+            a.in_file2();
+            int number = 5;
+            Buy(a, i, number, size);
+        }
+
+        window2.clear(Color::White);
+
+        window2.draw(text1);
+        window2.draw(text12);
+        myButton1.draw(window2);
+        window2.draw(text4);
+        rect.draw(window2);
+        window2.draw(text9);
+        window2.draw(text2);
+        rect1.draw(window2);
+        rect2.draw(window2);
+        rect3.draw(window2);
+
+        window2.draw(text3);
+        window2.draw(text3_1);
+        window2.draw(text3_2);
+        window2.draw(text3_3);
+        myButton3.draw(window2);
+        window2.draw(text3_4);
+
+        window2.draw(text5);
+        window2.draw(text5_1);
+        window2.draw(text5_2);
+        window2.draw(text5_3);
+        myButton4.draw(window2);
+        window2.draw(text5_4);
+
+        window2.draw(text6);
+        window2.draw(text6_1);
+        window2.draw(text6_2);
+        window2.draw(text6_3);
+        myButton5.draw(window2);
+        window2.draw(text6_4);
+
+        window2.draw(text7);
+        window2.draw(text7_1);
+        window2.draw(text7_2);
+        window2.draw(text7_3);
+        myButton6.draw(window2);
+        window2.draw(text7_4);
+
+        window2.draw(text10);
+        window2.draw(text10_1);
+        window2.draw(text10_2);
+        window2.draw(text10_3);
+        myButton7.draw(window2);
+        window2.draw(text10_4);
+
+        window2.draw(text11);
+        window2.draw(text11_1);
+        window2.draw(text11_2);
+        window2.draw(text11_3);
+        myButton8.draw(window2);
+        window2.draw(text11_4);
+
+        window2.draw(text13);
+
+        window2.draw(spriteObject1.sprite);
+        window2.draw(spriteObject2.sprite);
+        window2.draw(spriteObject3.sprite);
+        window2.draw(spriteObject4.sprite);
+        window2.draw(spriteObject5.sprite);
+        window2.draw(spriteObject6.sprite);
+
+        rect4.draw(window2);
+        rect5.draw(window2);
+        rect6.draw(window2);
+        rect7.draw(window2);
+        rect8.draw(window2);
+        rect9.draw(window2);
+
+        window2.display();
+    }
+}
+
+void Final(ARMANI& a, InfoProduct*& i, int number, int size)
+{
+    RenderWindow window3(VideoMode(1920, 1080), "Final");
+
+    while (window3.isOpen())
+    {
+
+        TextObject text1("ARMANI", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 42, Color::Black, { 10, 10 });
+        TextObject text2("clothing store", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-ExtraLight.ttf", 22, Color::Black, { 10, 50 });
+        TextObject text3("ARMANI thanks you for purchasing this product!", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 26, Color::Black, { 510, 255 });
+        TextObject text4("Your purchase receipt has been sent to you as a text file.", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 24, Color::Black, { 510, 290 });
+        TextObject text5("If you would like to exit, please click 'Close'.", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 24, Color::Black, { 510, 400 });
+
+        TextObject text7("You can also view product sales and profit information (Check info)", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 24, Color::Black, { 510, 480 });
+        TextObject text8("Close", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 30, Color::Black, { 905, 806 });
+        TextObject text10("Check info", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 26, Color::Black, { 1157, 808 });
+
+
+        Rectangle rect(Vector2f(500, 250), Vector2f(900, 500), Color(128, 128, 128, 128));
+        Rectangle rect1(Vector2f(490, 240), Vector2f(920, 520), Color::White);
+        rect1.setOutlineThickness(2);
+        rect1.setOutlineColor(Color::Black);
+
+        Button myButton1(Vector2f(280, 50), Vector2f(805, 800), Color::White, 1.75, Color::Black);
+        Button myButton3(Vector2f(230, 40), Vector2f(1110, 805), Color::White, 1.75, Color::Black);
+
+        Event event3;
+        while (window3.pollEvent(event3))
+        {
+            if (event3.type == Event::KeyPressed)
+                if (event3.key.code == Keyboard::Escape)
+                {
+                    window3.close();
+                }
+        }
+
+        if (myButton1.isMouseOver(window3))
+        {
+            myButton1.setFillColor(Color::Black);
+            text8.setFillColor(Color::White);
+        }
+
+        if (myButton3.isMouseOver(window3))
+        {
+            myButton3.setFillColor(Color::Black);
+            text10.setFillColor(Color::White);
+        }
+
+        if (myButton1.isClicked(window3))
+        {
+            window3.close();
+        }
+
+        if (myButton3.isClicked(window3))
+        {
+            a.result(i, a, number, a.get_kolvo(), size);
+        }
+
+        window3.clear(Color::White);
+
+        window3.draw(text1);
+        window3.draw(text2);
+        rect1.draw(window3);
+        rect.draw(window3);
+        window3.draw(text3);
+        window3.draw(text4);
+        window3.draw(text5);
+        window3.draw(text7);
+        myButton1.draw(window3);
+        myButton3.draw(window3);
+        window3.draw(text8);
+        window3.draw(text10);
+
+        window3.display();
+    }
+}
+
+void Home_Page(ARMANI& a, InfoProduct*& i, int size)
+{
+
+    RenderWindow window(VideoMode(1920, 1080), "Home Page");
+
+    while (window.isOpen())
+    {
+        TextObject text1("ARMANI", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Black.ttf", 42, Color::Black, { 10, 10 });
+        TextObject text12("clothing store", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-ExtraLight.ttf", 22, Color::Black, { 10, 50 });
+        TextObject text2("DISCOVER THE COLLECTION", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 36, Color::Black, { 1260, 500 });
+        TextObject text3("to collection", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Italic.ttf", 28, Color::Black, { 1428, 576 });
+        TextObject text4("HOME PAGE", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 24, Color::Black, { 1690, 25 });
+        TextObject text5("Copyright © 2023 Giorgio Armani S.p.A. - All Rights Reserved", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Thin.ttf", 20, Color(0, 0, 0, 180), { 10, 915 });
+        TextObject text6("Real luxury is to say what you think ©", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-Regular.ttf", 28, Color::Black, { 1230, 910 });
+        TextObject text7("Giorgio Armani", "C:\\Users\\админ\\Desktop\\вебка))))\\fonts\\Montserrat-ExtraLight.ttf", 24, Color::Black, { 1680, 945 });
+
+        Button myButton(Vector2f(270, 50), Vector2f(1380, 570), Color::White, 1.75, Color::Black);
+        Button myButton1(Vector2f(230, 40), Vector2f(1650, 20), Color::White, 1.75, Color::Black);
+
+        Rectangle rect(Vector2f(1262, 595), Vector2f(525, 1), Color::Black);
+        Rectangle rect1(Vector2f(1200, 900), Vector2f(1200, 525), Color(209, 209, 209));
+
+        Texture texture, texture1;
+        texture.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\armani11.jpg");
+        texture1.loadFromFile("C:\\Users\\админ\\Desktop\\вебка))))\\image\\giorgio.png");
+
+        SpriteObject spriteObject({ 0.0f, 100.0f }, texture, { 1, 1 }, Color(255, 255, 255, 140));
+        SpriteObject spriteObject1({ 1300.0f, 200.0f }, texture1, { 0.8, 0.8 }, Color(255, 255, 255));
+
+        Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+                window.close();
+
+        }
+
+        if (myButton.isMouseOver(window))
+        {
+            myButton.setFillColor(Color::Black);
+            text3.setFillColor(Color::White);
+        }
+
+        if (myButton1.isMouseOver(window))
+        {
+            myButton1.setFillColor(Color::Black);
+            text4.setFillColor(Color::White);
+        }
+
+        if (myButton.isClicked(window))
+        {
+            window.close();
+            Catalogue(a, i, size);
+        }
+
+        if (myButton1.isClicked(window))
+        {
+            window.close();
+            Home_Page(a, i, size);
+        }
+
+        window.clear(Color::White);
+
+        window.draw(text1);
+        window.draw(text12);
+        window.draw(text2);
+        rect.draw(window);
+        myButton.draw(window);
+        window.draw(text3);
+        myButton1.draw(window);
+        window.draw(text4);
+        window.draw(text5);
+        rect1.draw(window);
+        window.draw(text6);
+        window.draw(text7);
+        window.draw(spriteObject.sprite);
+        window.draw(spriteObject1.sprite);
+
+        window.display();
+    }
+}

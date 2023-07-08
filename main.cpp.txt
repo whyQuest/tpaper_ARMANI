@@ -1,0 +1,32 @@
+#include <SFML/Graphics.hpp>
+#include <windows.h>
+#include <iostream>
+#include <chrono>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include "program.h"
+#include "graphic.h"
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Rus");
+
+    HWND hWnd = GetConsoleWindow(); 
+    ShowWindow(hWnd, SW_HIDE);
+
+    ARMANI a;
+    const int size = 6;
+    InfoProduct* i = a.init(size);
+    a.in_file(i, size);
+
+    Home_Page(a, i, size);
+
+    a.delete_mat(i);
+
+    return 0;
+}
